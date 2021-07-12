@@ -29,24 +29,24 @@ fetch('data/pokemon/pokemon.json')
     datos = data.pokemon;   // variable global(Manejo de la data)
     loadSelect(datos);    // llama a loadSelect y le pasa la data completa
     loadPokemon(datos);   // llama a loadPokemon y le pasa la data completa
-  }).catch(error => console.log('hay error: '+ error));  // controla las excepciones
+  }).catch(error => console.log('hay error: ' + error));  // controla las excepciones
 
 /* 
  * variable global(Manejo de la data) - ARCHIVO.JS
  */
 //const datos = data.pokemon;
 
-/*************************************************TEMPLATES**********************************************************/
+/* ************************************************TEMPLATES**********************************************************/
 /* 
  * Template Carga Pokemon (Cards)
  */
 const loadPokemon = (listaPoke) => {  // Recibe un arreglo con los datos de un/unos pokemon
   const container = document.querySelector('#container-pokemon');
   container.innerHTML = ''; // para que limpie el container
-  //let templateList = '';
+  // let templateList = '';
   listaPoke.forEach((datos) => {
     const card = document.createElement('div');
-    card.className ='card';
+    card.className = 'card';
     const print = `
       <p class='propiedadNumPoke'># ${datos.num}</p>
       <p class='propiedadNumPoke'>${datos.stats['max-hp']} HP</p><p class='heartPoke'>♥</p>  
@@ -55,19 +55,20 @@ const loadPokemon = (listaPoke) => {  // Recibe un arreglo con los datos de un/u
       <p class='propiedadTipoPoke'> ${datos.type}</p>
       <p class='propiedadPoke'>height: ${datos.size['height']}</p>
       <p class='propiedadPoke'>weight: ${datos.size['weight']}</p>`;
-    //templateList += print;   // Llenaba todas las cards
-    card.innerHTML=print;   
+    // templateList += print;   // Llenaba todas las cards
+    card.innerHTML = print;   
     container.appendChild(card);  // Imprime card una X una
-    //templateList = '';
+    // templateList = '';
   });
-  //document.querySelector('#container-pokemon').innerHTML = templateList;  // Imprime todas las card juntas
+  // document.querySelector('#container-pokemon').innerHTML = templateList;  // Imprime todas las card juntas
 };  
 
 /*  
  *  Template selects  (Selects de Estadistica)
  */
 const loadSelect = (listaPoke) => { // Recibe un arreglo con los datos de los pokemones
-  let templateList ='';
+  let templateList = '';
+  templateList = '<option disabled selected value="Seleccione Pokemon">Seleccione Pokemon</option>';  
   listaPoke.forEach((datos) => {   
     const print = `<option value="${datos.name}">${datos.name}</option>`;
     templateList += print;    // Llena los selects con todos los names
@@ -79,15 +80,15 @@ const loadSelect = (listaPoke) => { // Recibe un arreglo con los datos de los po
 /* 
  * llama a loadSelect y le pasa la data a imprimir para selects - ARCHIVO.JS
  */
-//loadSelect(datos);
+// loadSelect(datos);
 
 /* 
  * llama a loadPokemon y le pasa la data a imprimir - ARCHIVO.JS
  */
-//loadPokemon(datos);
+// loadPokemon(datos);
 
 
-/**************************************************MENU***************************************************************/
+/* *************************************************MENU***************************************************************/
 /* 
  * Botón Filtar: Menu
  */
@@ -103,6 +104,8 @@ btnFiltrar.addEventListener('click', () => {
   document.querySelector('.elementos-container-calcular').classList.add('oculto');
 
   loadPokemon(datos);  // Volver a mostrar a todos los pokemones
+  document.querySelector('#slcTipos').value = 'Selecciona tipo de Pokemón'; // Volver a mostrar a todos los nombres de pokemones
+  
 });
 
 /* 
@@ -120,6 +123,9 @@ btnOrdenar.addEventListener('click', () => {
   document.querySelector('.elementos-container-calcular').classList.add('oculto');
 
   loadPokemon(datos);   // Volver a mostrar a todos los pokemones
+  document.querySelector('#slcOrden').value = 'Seleccione orden alfabético';
+
+  
 });
 
 /* 
@@ -137,6 +143,9 @@ btnPokemones.addEventListener('click', () => {
   document.querySelector('.elementos-container-calcular').classList.add('oculto');
 
   loadPokemon(datos);   // Volver a mostrar a todos los pokemones
+  document.querySelector('#txtBuscar').value = '';
+  
+
 });
 
 /* 
@@ -154,9 +163,12 @@ btnEstadistica.addEventListener('click', () => {
   document.querySelector('.elementos-container-calcular').classList.add('desoculto'); // mostrar este submenu
 
   loadPokemon(datos);   // Volver a mostrar a todos los pokemones
+
+  document.querySelector('#slcPoke1').value = 'Seleccione Pokemon'; // Volver a mostrar a todos los nombres de pokemones
+  document.querySelector('#slcPoke2').value = 'Seleccione Pokemon';
 });
 
-/*************************************************SUB-MENU**********************************************************/
+/* ************************************************SUB-MENU**********************************************************/
 /* 
  * Botón Buscar: Se ingresa el nombre de un pokemón
  */ 
@@ -172,7 +184,7 @@ btnBuscar.addEventListener('click', () => {
 const slcTipos = document.querySelector('#slcTipos');
 slcTipos.addEventListener('change',  () => {
   // condicion trae en el value el nombre del tipo:fire,water,etc
-  const condicion=document.querySelector('#slcTipos').value;
+  const condicion = document.querySelector('#slcTipos').value;
   loadPokemon(filterData(datos, condicion));  
 });
 
@@ -184,13 +196,13 @@ slcOrden.addEventListener('change',  () => {
   // Ordene por nombre
   const name = 'name';
   // condicion trae en el value el nombre del tipo:ascendente, descendente
-  const condicion=document.querySelector('#slcOrden').value;   
+  const condicion = document.querySelector('#slcOrden').value;   
   loadPokemon(sortData(datos,name, condicion));
 });
 
 
-/* **********************************************************************
- * Stats del Pokemon - Datos para Estadistica Grafica
+/* **********************************************************************/
+/* Stats del Pokemon - Datos para Estadistica Grafica*/
 
 const loadPokemonSelect = (Poke) => {
   const arrayPoke = [];
@@ -203,23 +215,16 @@ const loadPokemonSelect = (Poke) => {
     arrayPoke.push(ataque,defensa,stamina,cp,hp);
   }); 
   return arrayPoke; 
-}; */ 
+};
 
-/*
- * Manipula Grafica - Estadistica
+/* Manipula Grafica - Estadistica */
 
-function manupilarGrafico(txtPoke1,txtPoke2,dataPoke1,dataPoke2){
-  const container = document.querySelector('#container-pokemon');
-  const canvas ='<canvas id="grafica" width="400" height="300"></canvas>';  
-  container.innerHTML += canvas;
-  const grafica = document.querySelector('#grafica').getContext('2d'); // un contexto de renderizado de dos dimensiones
-  Grafico(grafica,txtPoke1,txtPoke2,dataPoke1,dataPoke2);
-} */
-/*
- * Grafica - Estadistica
- 
+/* Grafica - Estadistica */
+
 function Grafico(grafica,txtPoke1,txtPoke2,dataPoke1,dataPoke2){
-  const chart = new Chart(grafica,{  
+  //para que el eslint no lo lea al chart.
+  // eslint-disable-next-line    
+  const chart = new Chart (grafica,{  
     type: 'bar',
     data:{
       labels: ['Base-Attack', 'Base-Defense', 'Base-Stamina', 'Max-CP', 'Max-HP'], // Eje x  
@@ -237,9 +242,18 @@ function Grafico(grafica,txtPoke1,txtPoke2,dataPoke1,dataPoke2){
       ]     
     },
   });
-}*/
+}
 
-/**************************************************************************/
+
+function manupilarGrafico(txtPoke1,txtPoke2,dataPoke1,dataPoke2){
+  const container = document.querySelector('#container-pokemon');
+  const canvas = '<canvas id="grafica" width="400" height="300"></canvas>';  
+  container.innerHTML += canvas;
+  const grafica = document.querySelector('#grafica').getContext('2d'); // un contexto de renderizado de dos dimensiones
+  Grafico(grafica,txtPoke1,txtPoke2,dataPoke1,dataPoke2);
+}
+
+/* *************************************************************************/
 
 /*
  * Select pokemones: Estadisticas 
@@ -249,16 +263,17 @@ btnCalcular.addEventListener('click', () => {
   const txtPoke1 = document.querySelector('#slcPoke1').value; // Nombre Pokemon 1
   const txtPoke2 = document.querySelector('#slcPoke2').value; // Nombre Pokemon 2
   loadPokemon(computeStats(datos,txtPoke1, txtPoke2)); // Card Pokemon mas poderoso
-  //const dataPoke1 = loadPokemonSelect(searchPokemon(datos,txtPoke1)); // Stats Pokemon 1
-  //const dataPoke2 = loadPokemonSelect(searchPokemon(datos,txtPoke2)); // Stats Pokemon 2
-  //manupilarGrafico(txtPoke1,txtPoke2,dataPoke1,dataPoke2);  // Paso datos  
+
+  const dataPoke1 = loadPokemonSelect(searchPokemon(datos,txtPoke1)); // Stats Pokemon 1
+  const dataPoke2 = loadPokemonSelect(searchPokemon(datos,txtPoke2)); // Stats Pokemon 2
+  manupilarGrafico(txtPoke1,txtPoke2,dataPoke1,dataPoke2);  // Paso datos 
 });
 
 
-/*********************************************************************************************************************/
-/* 
- * Template carga Pokemon
+/***************************COMENTARIOS*****************************************************************/
 
+/* Template carga Pokemon */
+/*
 const loadPokemon = (listaPoke) => {
   let templateList ='';
   listaPoke.forEach((datos) => {
@@ -275,7 +290,9 @@ const loadPokemon = (listaPoke) => {
     templateList += print;    
   });
   document.querySelector('#container-pokemon').innerHTML = templateList;
-}; */ 
+};*/ 
+
+
 
 // const btnCalcular = document.getElementById('btnCalcular');
 // btnCalcular.addEventListener('click', () => { 

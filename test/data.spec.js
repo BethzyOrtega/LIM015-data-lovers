@@ -65,8 +65,8 @@ describe('filterData', () => {
   });  
   
   it('should be an object', () => {
-    expect(typeof filterData('')).toBe('object');
-  });
+    expect(typeof filterData('')).toBe('object');    
+  });  
 
   it('should filter for grass', () => {
     expect(filterData(input, 'grass')).toEqual(outputFilter);

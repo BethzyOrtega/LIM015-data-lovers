@@ -25,8 +25,15 @@ export const searchPokemon = (data, namePokemon) => {
 /* 
  * Fitrar Datos por Tipo
  */ 
-export const filterData = (data, condition) => {
-  const arrayFilter=[];
+export const filterData = (data, condition) => {  
+  
+  const arrayFilter = data.filter(function(tipo){
+    return tipo.type[0] == condition || tipo.type[1] == condition;         
+  });  
+  return arrayFilter;  
+  
+  /*
+  const arrayFilter = [];
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].type.length; j++) {           
       if (data[i].type[j] == condition) {    
@@ -34,14 +41,14 @@ export const filterData = (data, condition) => {
       }      
     }
   }  
-  return arrayFilter;  
+  return arrayFilter;  */
 };
 
 /* 
  * Ordenar Datos por Nombre
  */
 export const sortData = (data, sortBy, sortOrder) => {
-  let datosOrdenado=[];
+  let datosOrdenado = [];
   if(sortBy == 'name'){
     if(sortOrder == 'ascendente'){
       datosOrdenado = data.sort(function(prev, next){
@@ -70,10 +77,10 @@ export const sortData = (data, sortBy, sortOrder) => {
  * Calcular Pokemon mas fuerte
  */
 export const computeStats = (data, nameFirst, nameSecond) => {
-  let suma1 ='';
-  let suma2 ='';
-  const poke1=[];
-  const poke2 =[];
+  let suma1 = '';
+  let suma2 = '';
+  const poke1 = [];
+  const poke2 = [];
   for (let i = 0; i < data.length; i++) {
     if (data[i].name == nameFirst) {
       suma1 = parseInt(data[i].stats['base-attack']) + parseInt(data[i].stats['base-defense']) +
@@ -88,12 +95,14 @@ export const computeStats = (data, nameFirst, nameSecond) => {
       poke2.push(data[i]);  // Guarda la todo la data del pokemon2
     }  
   }
-  if (suma1>suma2){ 
+  if (suma1 > suma2){ 
     return poke1; // Si la suma de stats del (pokemon1 > pokemon2) -> mas poderoso (pokemon1)
   }else {
     return poke2; // Si la suma de stats del (pokemon2 > pokemon1) -> mas poderoso (pokemon2)
   }
 };
+
+
 /************************************************************************************************************/
 /* 
  * Cargar Pokemones
