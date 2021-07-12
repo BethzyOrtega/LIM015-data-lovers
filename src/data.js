@@ -27,12 +27,12 @@ export const searchPokemon = (data, namePokemon) => {
  */ 
 export const filterData = (data, condition) => {  
   
-  const arrayFilter = data.filter(function(tipo){
+  /*const arrayFilter = data.filter(function(tipo){
     return tipo.type[0] == condition || tipo.type[1] == condition;         
   });  
-  return arrayFilter;  
+  return arrayFilter; */ 
   
-  /*
+  
   const arrayFilter = [];
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].type.length; j++) {           
@@ -41,7 +41,7 @@ export const filterData = (data, condition) => {
       }      
     }
   }  
-  return arrayFilter;  */
+  return arrayFilter;  
 };
 
 /* 
